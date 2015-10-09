@@ -1,11 +1,18 @@
+/*******************************************************************************
+ * Project  : Clampmeter                                                       *
+ * Compiler : Arduino 1.6.5                                                    *
+ * Board    : Arduino UNO                                                      *
+ * Device   : RTC and SD Card Sheild                                           *
+ * Author   : Bavensky :3                                                      *
+ * E-Mail   : Aphirak_Sang-ngenchai@hotmail.com                                *
+ * Date     : 08/10/2015                                                       *
+ *******************************************************************************/
+
 #include <Wire.h>
 #include "RTClib.h"
 #include <SPI.h>
 #include <SD.h>
 
-#define ANALOG_IN 0
-#define DEBUG 0
-#define LIMIT 500
 #define TIME 3000
 #define OUTPUT_FILE "Datalog.csv"
 
@@ -37,11 +44,12 @@ void setup()
 
 void loop()   {
   DateTime now = rtc.now();
+  if(now_minute > 59) now_minute = 0;
   if (now.minute() == now_minute)  {
     writing(now_minute);
     now_minute += 1;
-   
   }
+  
 }
 
 void main_name() {
@@ -53,6 +61,7 @@ void main_name() {
     myFile.print("Time");
     myFile.print(",");
     myFile.println("Watt");
+    delay(TIME);
     myFile.close();
   }
 }
